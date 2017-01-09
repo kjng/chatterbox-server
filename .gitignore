@@ -41,3 +41,7 @@ node_modules
 
 ## API KEY ##
 client/env/config.js
+
+## Floobits ##
+.floo
+.flooignore
