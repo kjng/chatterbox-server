@@ -71,19 +71,20 @@ var requestHandler = function(request, response) {
   // See the note below about CORS headers.
   var headers = defaultCorsHeaders;
 
-  // Tell the client we are sending them plain text.
-  //
-  // You will need to change this if you are sending something
-  // other than plain text, like JSON or HTML.
+  // Tell the client we are sending them json.
   headers['Content-Type'] = 'application/json';
 
   if (request.method === 'OPTIONS' && request.url === '/classes/messages') {
+    // Handle OPTIONS request
+
     statusCode = 200;
 
     response.writeHead(statusCode, headers);
 
     response.end();
   } else if (request.method === 'GET' && request.url === '/classes/messages') {
+    // Handle GET request
+
     statusCode = 200;
 
     // .writeHead() writes to the request line and headers of the response,
@@ -99,6 +100,8 @@ var requestHandler = function(request, response) {
     // node to actually send all the data over to the client.
     response.end(JSON.stringify({ results: messages }));
   } else if (request.method === 'POST' && request.url === '/classes/messages') {
+    // Handle POST request
+
     statusCode = 201;
 
 
@@ -112,6 +115,8 @@ var requestHandler = function(request, response) {
 
     response.end(JSON.stringify({ results: messages }));
   } else {
+    // Return 404 if request is unrecognized or to an unrecognized route
+
     statusCode = 404;
 
     response.writeHead(statusCode, headers);
