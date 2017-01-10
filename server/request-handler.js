@@ -36,8 +36,9 @@ var messages = [];
 /**
  * The following are helper functions to interact with the messages array.
  *
- * [addMessage] pushes a provided argument message to the messages array
+ * [addMessage] pushes a provided argument, message, to the messages array
  * [fetchMessages] returns the array of messages
+ * (TODO: Put messages array in an object under the prop 'results' and stringify)
  */
 var addMessage = function(message) {
   messages.push(message);
@@ -67,9 +68,14 @@ var requestHandler = function(request, response) {
   // request.on('data', function(chunk) {
   //   body += chunk;
   // }).on('end', function() {
-  //   console.log(body);
+  //   addMessage(JSON.parse(body));
   // });
   //
+  // OR???
+  //
+  // request.on('data', function(chunk) {
+  //  addMessage(JSON.parse(chunk))
+  // })
 
   /**
    * {
@@ -89,7 +95,7 @@ var requestHandler = function(request, response) {
   //
   // You will need to change this if you are sending something
   // other than plain text, like JSON or HTML.
-  headers['Content-Type'] = 'text/plain'; // modify for JSON
+  headers['Content-Type'] = 'text/plain'; // modify for application/json
 
   if (request.method === 'GET' && request.url === '/classes/messages') {
     statusCode = 200;
