@@ -31,7 +31,15 @@ var defaultCorsHeaders = {
 /**
  * messages stores the server messages and the ones from client in an array
  */
-var messages = [];
+var messages = [
+  {
+    username: 'server',
+    text: 'Welcome to the server!',
+    roomname: 'lobby',
+    objectId: 1
+  }
+];
+var messageCount = 2;
 
 /**
  * The following are helper functions to interact with the messages array.
@@ -41,6 +49,8 @@ var messages = [];
  * (TODO: Put messages array in an object under the prop 'results' and stringify)
  */
 var addMessage = function(message) {
+  message.objectId = messageCount;
+  messageCount++;
   messages.push(message);
 };
 
@@ -92,9 +102,15 @@ var requestHandler = function(request, response) {
   //
   // You will need to change this if you are sending something
   // other than plain text, like JSON or HTML.
-  headers['Content-Type'] = 'text/plain'; // modify for application/json
+  headers['Content-Type'] = 'application/json'; // modify for application/json
 
-  if (request.method === 'GET' && request.url === '/classes/messages') {
+  if (request.method === 'OPTIONS' && request.url === '/classes/messages') {
+    statusCode = 200;
+
+    response.writeHead(statusCode, headers);
+
+    response.end();
+  } else if (request.method === 'GET' && request.url === '/classes/messages') {
     statusCode = 200;
 
     // .writeHead() writes to the request line and headers of the response,
