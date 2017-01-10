@@ -43,9 +43,6 @@ var messages = [];
 var addMessage = function(message) {
   messages.push(message);
 };
-var fetchMessages = function() {
-  return messages;
-};
 
 var requestHandler = function(request, response) {
   // Request and Response come from node's http module.
@@ -111,19 +108,23 @@ var requestHandler = function(request, response) {
     //
     // Calling .end "flushes" the response's internal buffer, forcing
     // node to actually send all the data over to the client.
-    response.end(JSON.stringify({ results: [] }));
+    response.end(JSON.stringify({ results: messages }));
   } else if (request.method === 'POST' && request.url === '/classes/messages') {
     statusCode = 201;
 
+    request.on('data', function(message) {
+      addMessage(JSON.parse(message));
+    });
+
     response.writeHead(statusCode, headers);
 
-    response.end(JSON.stringify({ results: [] }));
+    response.end(JSON.stringify({ results: messages }));
   } else {
     statusCode = 404;
 
     response.writeHead(statusCode, headers);
 
-    response.end('Your princess is in another castle.');
+    response.end('Your princess is in another castle.(Error 404)');
   }
 
 };
