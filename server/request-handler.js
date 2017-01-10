@@ -63,6 +63,22 @@ var requestHandler = function(request, response) {
   // console.logs in your code.
   console.log('Serving request type ' + request.method + ' for url ' + request.url);
 
+  // var body = '';
+  // request.on('data', function(chunk) {
+  //   body += chunk;
+  // }).on('end', function() {
+  //   console.log(body);
+  // });
+  //
+
+  /**
+   * {
+   *   "username": "kevin",
+   *   "text": "test",
+   *   "roomname": "lobby"
+   * }
+   */
+
   // The outgoing status.
   var statusCode = 200;
 
@@ -75,7 +91,7 @@ var requestHandler = function(request, response) {
   // other than plain text, like JSON or HTML.
   headers['Content-Type'] = 'text/plain'; // modify for JSON
 
-  if (request.method === 'GET') {
+  if (request.method === 'GET' && request.url === '/classes/messages') {
     statusCode = 200;
 
     // .writeHead() writes to the request line and headers of the response,
@@ -90,12 +106,18 @@ var requestHandler = function(request, response) {
     // Calling .end "flushes" the response's internal buffer, forcing
     // node to actually send all the data over to the client.
     response.end(JSON.stringify({ results: [] }));
-  } else if (request.method === 'POST') {
+  } else if (request.method === 'POST' && request.url === '/classes/messages') {
     statusCode = 201;
 
     response.writeHead(statusCode, headers);
 
     response.end(JSON.stringify({ results: [] }));
+  } else {
+    statusCode = 404;
+
+    response.writeHead(statusCode, headers);
+
+    response.end('Your princess is in another castle.');
   }
 
 };
