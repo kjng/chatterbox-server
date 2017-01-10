@@ -88,6 +88,43 @@ describe('Node Server Request Listener Function', function() {
     expect(res._ended).to.equal(true);
   });
 
+  describe('Server should handle OPTIONS requests', function() {
+    it('Should 200 on OPTIONS request to /classes/messages', function() {
+      var req = new stubs.request('/classes/messages', 'OPTIONS');
+      var res = new stubs.response();
+
+      handler.requestHandler(req, res);
+
+      // Expect 201 Created response status
+      expect(res._responseCode).to.equal(200);
+
+      // Testing for a newline isn't a valid test
+      // TODO: Replace with with a valid test
+      // expect(res._data).to.equal(JSON.stringify('\n'));
+      expect(res._ended).to.equal(true);
+    });
+
+    it('Should have proper CORS headers on an OPTIONS request', function() {
+      var properHeaders = {
+        'access-control-allow-origin': '*',
+        'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'access-control-allow-headers': 'content-type, accept',
+        'access-control-max-age': 10,
+        'Content-Type': 'application/json'
+      };
+
+      var req = new stubs.request('/classes/messages', 'OPTIONS');
+      var res = new stubs.response();
+
+      handler.requestHandler(req, res);
+
+      expect(JSON.stringify(res._headers)).to.equal(JSON.stringify(properHeaders));
+
+      expect(res._ended).to.equal(true);
+    });
+  });
+
+
   it('Should respond with messages that were previously posted', function() {
     var stubMsg = {
       username: 'Jono',
