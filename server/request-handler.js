@@ -28,9 +28,7 @@ var defaultCorsHeaders = {
   'access-control-max-age': 10 // Seconds.
 };
 
-/**
- * messages stores the server messages and the ones from client in an array
- */
+// [messages] stores the server messages and the ones from client in an array
 var messages = [
   {
     username: 'server',
@@ -39,15 +37,11 @@ var messages = [
     objectId: 1
   }
 ];
+// [messageCount] is the objectId added to each incoming message
 var messageCount = 2;
 
-/**
- * The following are helper functions to interact with the messages array.
- *
- * [addMessage] pushes a provided argument, message, to the messages array
- * [fetchMessages] returns the array of messages
- * (TODO: Put messages array in an object under the prop 'results' and stringify)
- */
+// [addMessage] pushes a provided argument, message, and objectId to the messages array
+// and increments the messageCount that keeps track of the object ID
 var addMessage = function(message) {
   message.objectId = messageCount;
   messageCount++;
@@ -71,27 +65,6 @@ var requestHandler = function(request, response) {
   // console.logs in your code.
   console.log('Serving request type ' + request.method + ' for url ' + request.url);
 
-  // var body = '';
-  // request.on('data', function(chunk) {
-  //   body += chunk;
-  // }).on('end', function() {
-  //   addMessage(JSON.parse(body));
-  // });
-  //
-  // OR???
-  //
-  // request.on('data', function(chunk) {
-  //  addMessage(JSON.parse(chunk))
-  // })
-
-  /**
-   * {
-   *   "username": "kevin",
-   *   "text": "test",
-   *   "roomname": "lobby"
-   * }
-   */
-
   // The outgoing status.
   var statusCode = 200;
 
@@ -102,7 +75,7 @@ var requestHandler = function(request, response) {
   //
   // You will need to change this if you are sending something
   // other than plain text, like JSON or HTML.
-  headers['Content-Type'] = 'application/json'; // modify for application/json
+  headers['Content-Type'] = 'application/json';
 
   if (request.method === 'OPTIONS' && request.url === '/classes/messages') {
     statusCode = 200;
@@ -128,6 +101,9 @@ var requestHandler = function(request, response) {
   } else if (request.method === 'POST' && request.url === '/classes/messages') {
     statusCode = 201;
 
+
+    // [request.on('data')] listens for a 'data' event on request
+    // and runs a callback on the data (message) received
     request.on('data', function(message) {
       addMessage(JSON.parse(message));
     });
@@ -140,7 +116,7 @@ var requestHandler = function(request, response) {
 
     response.writeHead(statusCode, headers);
 
-    response.end('Your princess is in another castle.(Error 404)');
+    response.end('Your princess is in another castle. (Error 404)');
   }
 
 };
