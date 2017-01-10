@@ -29,20 +29,19 @@ var defaultCorsHeaders = {
 };
 
 /**
- * messages stores the messages from client in an array
+ * messages stores the server messages and the ones from client in an array
  */
 var messages = [];
 
 /**
- * add Message pushes a provided argument message to the messages array
+ * The following are helper functions to interact with the messages array.
+ *
+ * [addMessage] pushes a provided argument message to the messages array
+ * [fetchMessages] returns the array of messages
  */
 var addMessage = function(message) {
   messages.push(message);
 };
-
-/**
- * fetchMessages returns the array of messages
- */
 var fetchMessages = function() {
   return messages;
 };
@@ -74,7 +73,7 @@ var requestHandler = function(request, response) {
   //
   // You will need to change this if you are sending something
   // other than plain text, like JSON or HTML.
-  headers['Content-Type'] = 'text/plain';
+  headers['Content-Type'] = 'text/plain'; // modify for JSON
 
   if (request.method === 'GET') {
     statusCode = 200;
