@@ -82,9 +82,8 @@ describe('Node Server Request Listener Function', function() {
     // Expect 201 Created response status
     expect(res._responseCode).to.equal(201);
 
-    // Testing for a newline isn't a valid test
-    // TODO: Replace with with a valid test
-    // expect(res._data).to.equal(JSON.stringify('\n'));
+    console.log(res._data);
+
     expect(res._ended).to.equal(true);
   });
 
@@ -95,12 +94,8 @@ describe('Node Server Request Listener Function', function() {
 
       handler.requestHandler(req, res);
 
-      // Expect 201 Created response status
       expect(res._responseCode).to.equal(200);
 
-      // Testing for a newline isn't a valid test
-      // TODO: Replace with with a valid test
-      // expect(res._data).to.equal(JSON.stringify('\n'));
       expect(res._ended).to.equal(true);
     });
 
@@ -137,7 +132,6 @@ describe('Node Server Request Listener Function', function() {
 
     expect(res._responseCode).to.equal(201);
 
-      // Now if we request the log for that room the message we posted should be there:
     req = new stubs.request('/classes/messages', 'GET');
     res = new stubs.response();
 
