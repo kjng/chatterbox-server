@@ -28,6 +28,25 @@ var defaultCorsHeaders = {
   'access-control-max-age': 10 // Seconds.
 };
 
+/**
+ * messages stores the messages from client in an array
+ */
+var messages = [];
+
+/**
+ * add Message pushes a provided argument message to the messages array
+ */
+var addMessage = function(message) {
+  messages.push(message);
+};
+
+/**
+ * fetchMessages returns the array of messages
+ */
+var fetchMessages = function() {
+  return messages;
+};
+
 var requestHandler = function(request, response) {
   // Request and Response come from node's http module.
   //
@@ -82,4 +101,4 @@ var requestHandler = function(request, response) {
 
 };
 
-module.exports = requestHandler;
+exports.requestHandler = requestHandler;
