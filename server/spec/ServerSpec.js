@@ -23,6 +23,19 @@ describe('Node Server Request Listener Function', function() {
     expect(res._ended).to.equal(true);
   });
 
+  it('Should answer POST requests for /classes/messages with a 201 status code', function() {
+    var postData = JSON.stringify({
+      'username': 'Kevin',
+      'text': 'Hello'
+    });
+    var req = new stubs.request('/classes/messages', 'POST', postData);
+    var res = new stubs.response();
+
+    handler.requestHandler(req, res);
+    expect(res._responseCode).to.equal(201);
+    expect(res._ended).to.equal(true);
+  });
+
   it('Should send back parsable stringified JSON', function() {
     var req = new stubs.request('/classes/messages', 'GET');
     var res = new stubs.response();
@@ -96,8 +109,8 @@ describe('Node Server Request Listener Function', function() {
     expect(res._responseCode).to.equal(200);
     var messages = JSON.parse(res._data).results;
     expect(messages.length).to.be.above(0);
-    expect(messages[1].username).to.equal('Jono');
-    expect(messages[1].message).to.equal('Do my bidding!');
+    expect(messages[2].username).to.equal('Jono');
+    expect(messages[2].message).to.equal('Do my bidding!');
     expect(res._ended).to.equal(true);
   });
 
