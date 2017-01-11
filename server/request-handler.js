@@ -49,7 +49,7 @@ var addMessage = function(message) {
   message.objectId = messageCount;
   messageCount++;
   messages.push(message);
-  fs.writeFile('./server/messagelog.txt', JSON.stringify(message) + '\r\n');
+  fs.appendFile('./server/messagelog.txt', JSON.stringify(message) + '\r\n');
 };
 
 var requestHandler = function(request, response) {
@@ -80,7 +80,9 @@ var requestHandler = function(request, response) {
 
   // Serve index.html when client requests '/'
   if (request.method === 'GET' && (url.parse(request.url).pathname === '/')) {
+
     statusCode = 200;
+
     headers['Content-Type'] = 'text/html';
 
     response.writeHead(statusCode, headers);
