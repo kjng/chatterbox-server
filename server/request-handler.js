@@ -1,3 +1,6 @@
+var fs = require('fs');
+var url = require('url');
+
 /*************************************************************
 
 You should implement your request handler function in this file.
@@ -74,7 +77,20 @@ var requestHandler = function(request, response) {
   // Tell the client we are sending them json.
   headers['Content-Type'] = 'application/json';
 
-  if (request.method === 'OPTIONS' && request.url === '/classes/messages') {
+  // Serve index.html when client requests '/'
+  if (request.method === 'GET' && (url.parse(request.url).pathname === '/')) {
+    statusCode = 200;
+    headers['Content-Type'] = 'text/html';
+
+    response.writeHead(statusCode, headers);
+
+    fs.readFile('./client/index.html', function(error, data) {
+      if (error) {
+        throw error;
+      }
+      response.end(data);
+    });
+  } else if (request.method === 'OPTIONS' && request.url === '/classes/messages') {
     // Handle OPTIONS request
 
     statusCode = 200;
@@ -116,6 +132,7 @@ var requestHandler = function(request, response) {
     response.end(JSON.stringify({ results: messages }));
   } else {
     // Return 404 if request is unrecognized or to an unrecognized route
+    headers['Content-Type'] = 'plain/text';
 
     statusCode = 404;
 
