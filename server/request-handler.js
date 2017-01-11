@@ -49,6 +49,7 @@ var addMessage = function(message) {
   message.objectId = messageCount;
   messageCount++;
   messages.push(message);
+  fs.writeFile('./server/messagelog.txt', JSON.stringify(message) + '\r\n');
 };
 
 var requestHandler = function(request, response) {
